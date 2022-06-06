@@ -1,0 +1,209 @@
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Add Configurations</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+      <!-- Bootstrap JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="bootstrap3-typeahead.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <style>
+         .bd-placeholder-img {
+         font-size: 1.125rem;
+         text-anchor: middle;
+         -webkit-user-select: none;
+         -moz-user-select: none;
+         -ms-user-select: none;
+         user-select: none;
+         }
+         @media (min-width: 768px) {
+         .bd-placeholder-img-lg {
+         font-size: 3.5rem;
+         }
+         }
+      </style>
+   </head>
+   <body style="background-color:#e9ecef">
+      <header>
+         <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container d-flex justify-content-between">
+               <span class="navbar-brand d-flex align-items-center">
+               <strong>Add Configurations</strong>
+               </span>
+               <a class="navbar-toggler" href="index">
+               <i class="material-icons">home</i>
+               </a>
+            </div>
+         </div>
+      </header>
+      <main role="main">
+         <section class="jumbotron text-center">
+            <div class="container">
+               <div class="alert alert-info" role="alert">
+                  Here you can edit the value of configuration
+                  <br>
+               </div>
+               <p class="lead">Enter details</p>
+               <div style="text-align:center">
+                  <div class="input-group mb-3" style="width:70%; left:15%">
+                     <div class="input-group-prepend" style="width:350px;">
+                        <span class="input-group-text" style="width:350px;" id="basic-addon1">Name</span>
+                     </div>
+                     <input type="text" class="form-control" id="name" value="" placeholder="" data-toggle="tooltip" data-placement="top" title="Name" >
+                  </div>
+               </div>
+               <div style="text-align:center">
+                  <div class="input-group mb-3" style="width:70%; left:15%">
+                     <div class="input-group-prepend" style="width:350px;">
+                        <span class="input-group-text" style="width:350px;" id="basic-addon1">Value</span>
+                     </div>
+                     <input type="text" class="form-control" id="value" value="" placeholder="" data-toggle="tooltip" data-placement="top" title="Value" >
+                  </div>
+               </div>
+                </div>
+                  <a href="#" onClick="startExecution()" class="btn btn-primary">Submit</a>
+               <div id="executionstatuspane">
+               	<div id="executionstatus">
+               	</div>
+               </div>
+               <br><br><br>
+
+               <div id="snackbar"></div>
+               <!-- hr>
+                  <p>Message after horizon line</p> -->
+            </div>
+            <script>
+               //initialize page
+               $(function () {
+               $('[data-toggle="tooltip"]').tooltip()
+               })
+               //this var will be set to true only when the branches are loaded. 
+               // it will be auto set to false , when there is a change in reponame field
+               var repostate = false;
+               var socketProtocol = "wss";
+               if (!location.protocol.startsWith("https")) {
+                   socketProtocol = "ws";
+               }
+               
+               function startExecution() {
+					var name = $("#name").val();
+					var name = $("#value").val();
+					
+					var payload_data = {
+							name : name,
+							value:value
+                    }
+					
+					var payload_data_stringified = JSON.stringify(payload_data)
+                    console.log("payload_data_stringified=" + payload_data_stringified)
+                    
+					var socket = new WebSocket(socketProtocol + '://' + window.location.host + '/edit_configuration_socket');
+					
+                    socket.onopen = function() {
+                        socket.send(payload_data_stringified);
+                    };
+                    
+			   }
+               
+            </script>
+            <style>
+               /* The snackbar - position it at the bottom and in the middle of the screen */
+               #snackbar {
+               visibility: hidden;
+               /* Hidden by default. Visible on click */
+               min-width: 250px;
+               /* Set a default minimum width */
+               margin-left: -125px;
+               /* Divide value of min-width by 2 */
+               background-color: #333;
+               /* Black background color */
+               color: #fff;
+               /* White text color */
+               text-align: center;
+               /* Centered text */
+               border-radius: 2px;
+               /* Rounded borders */
+               padding: 16px;
+               /* Padding */
+               position: fixed;
+               /* Sit on top of the screen */
+               z-index: 1;
+               /* Add a z-index if needed */
+               left: 50%;
+               /* Center the snackbar */
+               bottom: 30px;
+               /* 30px from the bottom */
+               }
+               /* Show the snackbar when clicking on a button (class added with JavaScript) */
+               #snackbar.show {
+               visibility: visible;
+               /* Show the snackbar */
+               /* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+               However, delay the fade out process for 2.5 seconds */
+               -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+               animation: fadein 0.5s, fadeout 0.5s 2.5s;
+               }
+               /* Animations to fade the snackbar in and out */
+               @-webkit-keyframes fadein {
+               from {
+               bottom: 0;
+               opacity: 0;
+               }
+               to {
+               bottom: 30px;
+               opacity: 1;
+               }
+               }
+               @keyframes fadein {
+               from {
+               bottom: 0;
+               opacity: 0;
+               }
+               to {
+               bottom: 30px;
+               opacity: 1;
+               }
+               }
+               @-webkit-keyframes fadeout {
+               from {
+               bottom: 30px;
+               opacity: 1;
+               }
+               to {
+               bottom: 0;
+               opacity: 0;
+               }
+               }
+               @keyframes fadeout {
+               from {
+               bottom: 30px;
+               opacity: 1;
+               }
+               to {
+               bottom: 0;
+               opacity: 0;
+               }
+               }
+            </style>
+            <!--div class="alert alert-primary" role="alert">
+               Alert in blue
+               </div>
+               
+               <div class="alert alert-success" role="alert">
+               <h4 class="alert-heading">--Some important message--</h4>
+               <p>Alert in green</p>
+               <hr>
+               <p class="mb-0">Message after horizon line</p>
+               </div-->
+            </div>
+         </section>
+      </main>
+   </body>
+</html>
