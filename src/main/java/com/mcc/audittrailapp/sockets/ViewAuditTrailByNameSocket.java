@@ -1,5 +1,7 @@
 package com.mcc.audittrailapp.sockets;
 
+import java.util.List;
+
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
@@ -7,6 +9,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.google.gson.Gson;
 import com.mcc.audittrailapp.controller.AuditTrailController;
+import com.mcc.audittrailapp.model.AuditTrail;
 import com.mcc.audittrailapp.model.Configuration;
 
 public class ViewAuditTrailByNameSocket implements WebSocketHandler {
@@ -28,7 +31,7 @@ public class ViewAuditTrailByNameSocket implements WebSocketHandler {
 		Configuration configuration = gson.fromJson(payload, Configuration.class);
 		
 		AuditTrailController controller = new AuditTrailController();
-		controller.getAuditTrailByName(configuration);
+		List<AuditTrail> auditTrailList = controller.getAuditTrailByName(configuration);
  	}
 
 	@Override
