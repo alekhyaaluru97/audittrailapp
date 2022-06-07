@@ -2,11 +2,13 @@ package com.mcc.audittrailapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-public class AudittrailappApplication {
+@ComponentScan(basePackages= {"com.mcc.audittrailapp.controller"})
+public class AudittrailApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AudittrailappApplication.class, args);
+		SpringApplication.run(AudittrailApp.class, args);
 	}
 }

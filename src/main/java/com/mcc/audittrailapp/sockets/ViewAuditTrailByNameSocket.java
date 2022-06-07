@@ -5,7 +5,9 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.google.gson.Gson;
 import com.mcc.audittrailapp.controller.AuditTrailController;
+import com.mcc.audittrailapp.model.Configuration;
 
 public class ViewAuditTrailByNameSocket implements WebSocketHandler {
 
@@ -22,9 +24,12 @@ public class ViewAuditTrailByNameSocket implements WebSocketHandler {
 		System.out.println("View AuditTrail By Name Socket: session ID: "+sessionId);
 		String payload = message.getPayload().toString();
 		
+		Gson gson = new Gson();
+		Configuration configuration = gson.fromJson(payload, Configuration.class);
+		
 		AuditTrailController controller = new AuditTrailController();
-		controller.getAuditTrailByName(payload);
-	}
+		controller.getAuditTrailByName(configuration);
+ 	}
 
 	@Override
 	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {

@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
 
 import com.mcc.audittrailapp.connection.GetConnection;
 import com.mcc.audittrailapp.model.AuditTrail;
 
+@Service
 public class AuditTrailDAO {
 
 	public boolean addAuditTrail(AuditTrail auditTrail) {
@@ -75,6 +77,7 @@ public class AuditTrailDAO {
 			String sql = "SELECT * FROM audittrail WHERE name=?";
 			PreparedStatement ps = GetConnection.getConnection().prepareStatement(sql);
 			ps.setString(1, name);
+			System.out.println("Executing query: "+ps);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {

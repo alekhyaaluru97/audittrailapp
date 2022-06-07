@@ -10,7 +10,6 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
       <!-- Bootstrap JS -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-      <script src="bootstrap3-typeahead.min.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.min.css">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.min.js"></script>
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -35,7 +34,7 @@
          <div class="navbar navbar-dark bg-dark shadow-sm">
             <div class="container d-flex justify-content-between">
                <span class="navbar-brand d-flex align-items-center">
-               <strong>Add Configurations</strong>
+               <strong>View Audit Trail</strong>
                </span>
                <a class="navbar-toggler" href="index">
                <i class="material-icons">home</i>
@@ -94,7 +93,7 @@
 					var payload_data_stringified = JSON.stringify(payload_data)
                     console.log("payload_data_stringified=" + payload_data_stringified)
                     
-					var socket = new WebSocket(socketProtocol + '://' + window.location.host + '/edit_configuration_socket');
+					var socket = new WebSocket(socketProtocol + '://' + window.location.host + '/view_audit_trail_by_name');
 					
                     socket.onopen = function() {
                         socket.send(payload_data_stringified);

@@ -1,6 +1,8 @@
 package com.mcc.audittrailapp.controller;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
@@ -8,6 +10,8 @@ import com.mcc.audittrailapp.sockets.AddConfigurationSocket;
 import com.mcc.audittrailapp.sockets.EditConfigurationSocket;
 import com.mcc.audittrailapp.sockets.ViewAuditTrailByNameSocket;
 
+@Configuration
+@EnableWebSocket
 public class WebSocketController implements WebSocketConfigurer {
 
 	@Override

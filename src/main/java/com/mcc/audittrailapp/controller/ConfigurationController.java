@@ -34,13 +34,13 @@ public class ConfigurationController {
 	}
 	
 	@GetMapping("/{id}")
-    public Configuration getConfigurationById(@PathVariable Integer id) {
-        return configurationdao.getConfigurationById(id);            
+    public Configuration getConfigurationById(@PathVariable String name) {
+        return configurationdao.getConfigurationByName(name);            
     }
 
     @PutMapping("/{id}")
     public boolean update(@RequestBody Configuration configuration){
-        return configurationdao.updateConfigurationValue(configuration.getId(), configuration.getValue());
+        return configurationdao.updateConfigurationValue(configuration.getName(), configuration.getValue());
     }
     
     @DeleteMapping("/{id}")

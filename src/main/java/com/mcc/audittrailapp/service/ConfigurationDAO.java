@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Service;
+
 import com.mcc.audittrailapp.connection.GetConnection;
 import com.mcc.audittrailapp.model.AuditTrail;
 import com.mcc.audittrailapp.model.Configuration;
 
+@Service
 public class ConfigurationDAO {
 
 	public boolean insertNewConfiguration(Configuration configuration) {
@@ -34,22 +37,22 @@ public class ConfigurationDAO {
 		return false;
 	}
 
-	public boolean updateConfigurationValue(int config_id, String value) {
+	public boolean updateConfigurationValue(String configname, String value) {
 		try {
-			Configuration beforeUpdateConfiguration = getConfigurationById(config_id);
+			Configuration beforeUpdateConfiguration = getConfigurationByName(configname);
 			String nameofConfigBeingUpdated = beforeUpdateConfiguration.getName();
 			String valueBeforeUpdate = beforeUpdateConfiguration.getValue();
 			
 			AuditTrail audittrail = new AuditTrail();
 			AuditTrailDAO audittraildao = new AuditTrailDAO();
 			
-			String sql = "UPDATE configuration set value=? WHERE id=?";
+			String sql = "UPDATE configuration set value=? WHERE name=?";
 			PreparedStatement ps = GetConnection.getConnection().prepareStatement(sql);
 			ps.setString(1, value);
-			ps.setInt(2, config_id);			
+			ps.setString(2, configname);			
 			boolean isConfigUpdated = ps.executeUpdate() > 0;
 			if(isConfigUpdated) {				
-				audittrail.setConfig_id(config_id);
+				//audittrail.setConfig_id(configname);
 				audittrail.setName(nameofConfigBeingUpdated);
 				audittrail.setPreviousvalue(valueBeforeUpdate);
 				audittrail.setNewvalue(value);
@@ -83,11 +86,11 @@ public class ConfigurationDAO {
 		return false;
 	}
 
-	public Configuration getConfigurationById(int id) {
+	public Configuration getConfigurationByName(String name) {
 		try {
-			String sql = "SELECT * FROM configuration WHERE id=?";
+			String sql = "SELECT * FROM configuration WHERE name=?";
 			PreparedStatement ps = GetConnection.getConnection().prepareStatement(sql);
-			ps.setInt(1, id);
+			ps.setString(1, name);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
 				for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
