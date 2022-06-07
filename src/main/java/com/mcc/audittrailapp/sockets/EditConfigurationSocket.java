@@ -28,7 +28,13 @@ public class EditConfigurationSocket implements WebSocketHandler {
 		Configuration configuration = gson.fromJson(payload, Configuration.class);
 		
 		ConfigurationController controller = new ConfigurationController();
-		controller.update(configuration);
+		boolean isSuccesful= controller.update(configuration);
+		
+		if(isSuccesful) {
+			Messenger.sendMessage("Successfully updated the configuration", session);
+		} else {
+			Messenger.sendMessage("Could not update the configuration", session);
+		}
 	}
 
 	@Override

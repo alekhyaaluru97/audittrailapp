@@ -2,7 +2,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Add Configurations</title>
+      <title>View Audit Trail</title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
@@ -98,9 +98,18 @@
                     socket.onopen = function() {
                         socket.send(payload_data_stringified);
                     };
+					
+                    $("#executionstatus").append("<br><h4 class='alert-heading'>Your Result</h4>");
                     
+                    socket.onmessage = function(message) {
+                        console.log('Message received from server: ' + message.data);
+                        addMessage(message.data);
+                    };
 			   }
                
+               function addMessage(message) {
+                   $("#executionstatus").append("<hr><p> " + message + " </p>");
+               }
             </script>
             <style>
                /* The snackbar - position it at the bottom and in the middle of the screen */

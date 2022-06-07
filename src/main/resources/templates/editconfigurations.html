@@ -112,7 +112,17 @@
                         socket.send(payload_data_stringified);
                     };
                     
+                    $("#executionstatus").append("<br><h4 class='alert-heading'>Status</h4>");
+                    
+                    socket.onmessage = function(message) {
+                        console.log('Message received from server: ' + message.data);
+                        addMessage(message.data);
+                    };
 			   }
+               
+               function addMessage(message) {
+                   $("#executionstatus").append("<hr><p> " + message + " </p>");
+               }
                
             </script>
             <style>

@@ -32,6 +32,15 @@ public class ViewAuditTrailByNameSocket implements WebSocketHandler {
 		
 		AuditTrailController controller = new AuditTrailController();
 		List<AuditTrail> auditTrailList = controller.getAuditTrailByName(configuration);
+		
+		String result = " ";
+		
+		for(AuditTrail auditrecord : auditTrailList) {
+			result = result.concat("On "+ auditrecord.getDate() + ", the value of: <b> " + auditrecord.getName()+ "</b> changed from <b> " + auditrecord.getPreviousvalue()+ " </b> to  <b> " + auditrecord.getNewvalue()+" </b>");
+			result = result.concat("<br>");
+		}
+		
+		Messenger.sendMessage(result, session);
  	}
 
 	@Override
